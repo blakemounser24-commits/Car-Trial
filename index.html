@@ -6,6 +6,16 @@
 <title>Astra</title>
 <link rel="icon" type="image/jpeg" href="./favicon.jpg">
 <link rel="apple-touch-icon" href="./favicon.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-001.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-002.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-003.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-004.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-005.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-006.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-007.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-008.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-009.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-010.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
@@ -1097,10 +1107,16 @@ canvas {
     paint(currentIdx);
   }
 
-  /* ── Cover-fill draw ── */
+  /* ── Cover-fill draw (falls back to nearest loaded frame) ── */
   function paint(idx) {
-    const img = imgs[idx];
-    if (!img || !img.complete || !img.naturalWidth) return;
+    let img = imgs[idx];
+    if (!img || !img.complete || !img.naturalWidth) {
+      // walk backwards to nearest ready frame
+      for (let i = idx - 1; i >= 0; i--) {
+        if (imgs[i] && imgs[i].complete && imgs[i].naturalWidth) { img = imgs[i]; break; }
+      }
+      if (!img || !img.complete || !img.naturalWidth) return;
+    }
 
     const iw = img.naturalWidth;
     const ih = img.naturalHeight;
@@ -1129,16 +1145,24 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload all frames ── */
+  /* ── Preload: show hero after REVEAL_AT frames, load rest in background ── */
+  const REVEAL_AT = 20;
+
   function preload() {
     return new Promise(resolve => {
+      let revealed = false;
+
       for (let i = 0; i < TOTAL; i++) {
         const img = new Image();
+        img.decoding = 'async';
         const n = String(i + 1).padStart(3, '0');
         img.onload = img.onerror = () => {
           loaded++;
           fill.style.width = (loaded / TOTAL * 100) + '%';
-          if (loaded === TOTAL) resolve();
+          if (!revealed && loaded >= REVEAL_AT) {
+            revealed = true;
+            resolve(); // show hero early — rest keeps loading in background
+          }
         };
         img.src = PREFIX + n + '.jpg';
         imgs[i] = img;
