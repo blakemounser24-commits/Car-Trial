@@ -26,10 +26,24 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 28px;
   z-index: 999;
   transition: opacity 0.7s ease;
 }
 #loader.fade-out { opacity: 0; pointer-events: none; }
+
+#loader-car {
+  width: 220px;
+  height: 148px;
+  object-fit: cover;
+  border-radius: 4px;
+  filter: drop-shadow(0 0 24px rgba(200,100,40,0.45));
+  animation: loaderCarPulse 2.4s ease-in-out infinite;
+}
+@keyframes loaderCarPulse {
+  0%, 100% { filter: drop-shadow(0 0 18px rgba(200,100,40,0.35)); }
+  50%       { filter: drop-shadow(0 0 36px rgba(200,100,40,0.65)); }
+}
 
 #progress-track {
   width: 160px;
@@ -613,6 +627,7 @@ canvas {
 </div>
 
 <div id="loader">
+  <img id="loader-car" src="./favicon.jpg" alt="Astra">
   <div id="progress-track"><div id="progress-fill"></div></div>
 </div>
 
