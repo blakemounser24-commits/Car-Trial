@@ -6,26 +6,6 @@
 <title>Astra</title>
 <link rel="icon" type="image/jpeg" href="./favicon.jpg">
 <link rel="apple-touch-icon" href="./favicon.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-001.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-002.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-003.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-004.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-005.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-006.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-007.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-008.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-009.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-010.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-011.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-012.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-013.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-014.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-015.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-016.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-017.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-018.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-019.webp">
-<link rel="preload" as="image" href="./frames/ezgif-frame-020.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
@@ -1094,7 +1074,6 @@ canvas {
 
   const TOTAL  = 211;
   const PREFIX = './frames/ezgif-frame-';
-  const EXT    = '.webp';
 
   const canvas = document.getElementById('c');
   const ctx    = canvas.getContext('2d', { alpha: false });
@@ -1103,12 +1082,12 @@ canvas {
   const fill   = document.getElementById('progress-fill');
 
   /* ── State ── */
-  const bitmaps = new Array(TOTAL); // GPU-resident ImageBitmaps for free blitting
-  let loaded     = 0;
-  let currentIdx = 0;
-  let targetIdx  = 0;
-  let canvasW    = 0;
-  let canvasH    = 0;
+  const imgs = new Array(TOTAL);
+  let loaded       = 0;
+  let currentIdx   = 0;
+  let targetIdx    = 0;
+  let canvasW      = 0;
+  let canvasH      = 0;
 
   /* ── Canvas resize ── */
   function resize() {
@@ -1118,18 +1097,16 @@ canvas {
     paint(currentIdx);
   }
 
-  /* ── Cover-fill draw from GPU bitmap (falls back to nearest ready frame) ── */
+  /* ── Cover-fill draw ── */
   function paint(idx) {
-    let bmp = bitmaps[idx];
-    if (!bmp) {
-      for (let i = idx - 1; i >= 0; i--) {
-        if (bitmaps[i]) { bmp = bitmaps[i]; break; }
-      }
-      if (!bmp) return;
-    }
-    const iw = bmp.width, ih = bmp.height;
+    const img = imgs[idx];
+    if (!img || !img.complete || !img.naturalWidth) return;
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
     const scale = Math.max(canvasW / iw, canvasH / ih);
-    ctx.drawImage(bmp, (canvasW - iw * scale) * 0.5, (canvasH - ih * scale) * 0.5, iw * scale, ih * scale);
+    const w = iw * scale, h = ih * scale;
+    const x = (canvasW - w) * 0.5, y = (canvasH - h) * 0.5;
+    ctx.drawImage(img, x, y, w, h);
   }
 
   /* ── Scroll → frame index ── */
@@ -1148,42 +1125,20 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload: priority order → frame 0 first, keyframes every 10, then rest ── */
-  const CONCURRENCY = 10;
-
-  function buildPriorityOrder() {
-    const order = [0];
-    for (let i = 10; i < TOTAL; i += 10) order.push(i);
-    for (let i = 0; i < TOTAL; i++) { if (i % 10 !== 0) order.push(i); }
-    return order;
-  }
-
+  /* ── Preload all frames ── */
   function preload() {
     return new Promise(resolve => {
-      let revealed = false;
-      const order = buildPriorityOrder();
-      let cursor = 0;
-
-      function next() {
-        if (cursor >= order.length) return;
-        const i = order[cursor++];
+      for (let i = 0; i < TOTAL; i++) {
         const img = new Image();
-        img.decoding = 'async';
-        img.src = PREFIX + String(i + 1).padStart(3, '0') + EXT;
-        img.onload = () => {
-          // Decode into GPU texture off the main thread
-          createImageBitmap(img).then(bmp => {
-            bitmaps[i] = bmp;
-            loaded++;
-            fill.style.width = (loaded / TOTAL * 100) + '%';
-            if (!revealed && i === 0) { revealed = true; resolve(); }
-            next();
-          });
+        const n = String(i + 1).padStart(3, '0');
+        img.onload = img.onerror = () => {
+          loaded++;
+          fill.style.width = (loaded / TOTAL * 100) + '%';
+          if (loaded === TOTAL) resolve();
         };
-        img.onerror = () => { loaded++; next(); };
+        img.src = PREFIX + n + '.jpg';
+        imgs[i] = img;
       }
-
-      for (let c = 0; c < Math.min(CONCURRENCY, TOTAL); c++) next();
     });
   }
 
