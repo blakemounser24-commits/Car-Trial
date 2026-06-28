@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: #02040A;
+  overscroll-behavior: none;
+}
+
+/* ── Loader ── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #02040A;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: opacity 0.7s ease;
+}
+#loader.fade-out { opacity: 0; pointer-events: none; }
+
+#progress-track {
+  width: 160px;
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+}
+#progress-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(255,255,255,0.65);
+  transition: width 0.06s linear;
+}
+
+/* ── Scroll container ── */
+#scroll-root {
+  /* Total scroll travel = (SCROLL_MULT - 1) × 100vh of actual scrollable distance */
+  height: 600vh;
+  background: #02040A;
+}
+
+/* ── Sticky viewport ── */
+#sticky-hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #02040A;
+}
+
+canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════
+   CINEMATIC SECTIONS
+═══════════════════════════════════════════ */
+
+/* — Shared base — */
+.cs { position: relative; background: #02040A; overflow: hidden; }
+
+[data-reveal] { opacity: 0; }
+
+.cs-eyebrow {
+  font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(200,169,126,0.65);
+  margin-bottom: 2.5rem;
+}
+.cs-eyebrow--center { text-align: center; }
+
+.cs-headline {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-weight: 300;
+  line-height: 1.0;
+  color: #F4F1EC;
+  letter-spacing: -0.02em;
+}
+.cs-headline em { font-style: italic; color: #C8A97E; }
+
+.cs-body {
+  font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  line-height: 1.78;
+  color: rgba(244,241,236,0.38);
+}
+
+/* — DISCOVERY — */
+#s-discovery {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16vh 8vw;
+}
+.discover-inner { text-align: center; }
+.discover-headline {
+  font-size: clamp(72px, 11vw, 170px);
+  margin-bottom: 3rem;
+}
+.cs-line {
+  display: block;
+  clip-path: inset(0 0 100% 0);
+}
+.cs-line--gold { color: #C8A97E; font-style: italic; }
+.discover-rule {
+  height: 1px;
+  width: 0;
+  background: linear-gradient(90deg, transparent, rgba(200,169,126,0.35), transparent);
+  margin: 3rem auto 0;
+}
+#s-discovery .cs-body {
+  font-size: clamp(15px, 1.3vw, 18px);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* — DESIGN — */
+#s-design { min-height: 100vh; }
+.design-grid {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: 100vh;
+}
+@media (max-width: 768px) {
+  .design-grid { grid-template-columns: 1fr; }
+  .design-visual { min-height: 50vh; }
+}
+.design-visual {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(150deg, #07091300 0%, #0d1020 50%, #060911 100%);
+}
+.design-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 55% 70% at 32% 55%, rgba(200,169,126,0.07) 0%, transparent 65%);
+}
+.design-light::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -70%;
+  width: 45%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200,169,126,0.045), transparent);
+  transform: skewX(-12deg);
+  animation: lightsweep 8s ease-in-out infinite;
+}
+@keyframes lightsweep {
+  0%   { left: -70%; opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { left: 130%; opacity: 0; }
+}
+.design-vline {
+  position: absolute;
+  left: 10%;
+  top: 18%;
+  bottom: 18%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(200,169,126,0.18), transparent);
+}
+.design-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10vh 6vw 10vh 5vw;
+}
+.design-copy .cs-headline {
+  font-size: clamp(42px, 5.5vw, 88px);
+  margin-bottom: 2rem;
+}
+.design-copy .cs-body {
+  font-size: clamp(15px, 1.3vw, 17px);
+  max-width: 380px;
+}
+.design-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(244,241,236,0.07);
+  border-bottom: 1px solid rgba(244,241,236,0.07);
+  padding: 1.4rem 0;
+  margin-top: 3rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  color: rgba(244,241,236,0.3);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.design-detail b { color: #C8A97E; font-weight: 400; }
+
+/* — POWER — */
+#s-power {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12vh 6vw;
+  background: #020408;
+}
+.power-inner { width: 100%; max-width: 1100px; text-align: center; }
+.power-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5rem 0 7rem;
+}
+@media (max-width: 640px) {
+  .power-stats { flex-direction: column; gap: 3rem; }
+  .stat-divider { width: 60px; height: 1px; }
+}
+.stat-block { flex: 1; padding: 1.5rem; opacity: 0; }
+.stat-num {
+  display: block;
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(64px, 9.5vw, 138px);
+  font-weight: 300;
+  color: #F4F1EC;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.stat-unit {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  color: rgba(200,169,126,0.6);
+  text-transform: uppercase;
+  margin-top: 0.6rem;
+}
+.stat-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  color: rgba(244,241,236,0.2);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 0.9rem;
+}
+.stat-divider {
+  width: 1px;
+  height: 110px;
+  background: rgba(244,241,236,0.07);
+  flex-shrink: 0;
+  opacity: 0;
+}
+.power-quote {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(34px, 4.2vw, 66px);
+  font-weight: 300;
+  color: rgba(244,241,236,0.48);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.power-quote em { color: #F4F1EC; font-style: italic; }
+
+/* — ATMOSPHERE — */
+#s-atmosphere {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#three-canvas {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+.atm-copy {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+.atm-headline {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(52px, 8.5vw, 128px);
+  font-weight: 300;
+  color: #F4F1EC;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.atm-headline em { font-style: italic; color: #C8A97E; }
+.atm-body {
+  max-width: 310px;
+  margin: 1.5rem auto 0;
+  font-size: clamp(14px, 1.2vw, 16px);
+}
+
+/* — LEGACY / CTA — */
+#s-legacy {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12vh 8vw;
+}
+.legacy-inner { text-align: center; width: 100%; max-width: 680px; }
+.legacy-rule {
+  height: 1px;
+  background: rgba(244,241,236,0.07);
+  width: 100%;
+}
+.legacy-headline {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(48px, 7vw, 110px);
+  font-weight: 300;
+  color: #F4F1EC;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 2.5rem 0;
+}
+.legacy-headline em { font-style: italic; color: #C8A97E; }
+.legacy-body {
+  font-size: clamp(14px, 1.2vw, 16px);
+  max-width: 360px;
+  margin: 0 auto;
+}
+.legacy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 3.5rem;
+  padding: 1.15rem 2.8rem;
+  border: 1px solid rgba(200,169,126,0.38);
+  color: #C8A97E;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.5s ease, color 0.5s ease, border-color 0.45s ease, gap 0.35s ease;
+}
+.legacy-btn:hover {
+  background: rgba(200,169,126,0.06);
+  border-color: #C8A97E;
+  color: #F4F1EC;
+  gap: 1.3rem;
+}
+
+/* ── Navbar ── */
+/* ── Pill Navbar (ported from Navbar1) ── */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  padding: 1.4rem 1.5rem 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+.nav-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 880px;
+  padding: 0.62rem 0.62rem 0.62rem 1.1rem;
+  background: rgba(4,6,14,0.82);
+  border: 1px solid rgba(244,241,236,0.09);
+  border-radius: 100px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(244,241,236,0.05);
+  gap: 0.75rem;
+}
+.nav-logo-wrap {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.nav-logo-wrap svg { display: block; transition: transform 0.35s ease; }
+.nav-logo-wrap:hover svg { transform: rotate(12deg) scale(1.06); }
+
+.nav-links-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  flex: 1;
+  justify-content: center;
+}
+@media (max-width: 620px) { .nav-links-wrap { display: none; } }
+.nav-links-wrap a {
+  font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: rgba(244,241,236,0.48);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.25s ease;
+  white-space: nowrap;
+}
+.nav-links-wrap a:hover,
+.nav-links-wrap a.active { color: #F4F1EC; }
+
+.nav-pill-cta {
+  flex-shrink: 0;
+  font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #02040A;
+  background: #C8A97E;
+  border-radius: 100px;
+  padding: 0.65rem 1.4rem;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.22s ease;
+  white-space: nowrap;
+}
+.nav-pill-cta:hover { background: #d5b88c; transform: scale(1.05); }
+@media (max-width: 620px) { .nav-pill-cta { display: none; } }
+
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: rgba(244,241,236,0.65);
+  cursor: pointer;
+  padding: 0.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.25s;
+}
+.nav-hamburger:hover { color: #F4F1EC; }
+@media (max-width: 620px) { .nav-hamburger { display: flex; } }
+
+/* Mobile overlay — ported from AnimatePresence slide-in */
+.nav-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #02040A;
+  display: flex;
+  flex-direction: column;
+  padding: 5.5rem 2.5rem 3rem;
+  transform: translateX(100%);
+  transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  overflow-y: auto;
+}
+.nav-mobile-overlay.open { transform: translateX(0); pointer-events: auto; }
+.nav-mobile-close {
+  position: absolute;
+  top: 1.6rem; right: 1.6rem;
+  background: none;
+  border: 1px solid rgba(244,241,236,0.1);
+  color: rgba(244,241,236,0.55);
+  cursor: pointer;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.25s, color 0.25s;
+}
+.nav-mobile-close:hover { border-color: rgba(244,241,236,0.3); color: #F4F1EC; }
+.nav-mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+.nav-mobile-links a {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(36px, 10vw, 56px);
+  font-weight: 300;
+  color: rgba(244,241,236,0.65);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(244,241,236,0.05);
+  transition: color 0.2s, padding-left 0.3s;
+  display: block;
+}
+.nav-mobile-links a:hover { color: #C8A97E; padding-left: 0.5rem; }
+.nav-mobile-cta { padding-top: 2.5rem; }
+.nav-mobile-cta a {
+  display: block;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #02040A;
+  background: #C8A97E;
+  padding: 1.2rem;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.nav-mobile-cta a:hover { background: #d5b88c; }
+
+/* ── Hero overlay (inside sticky-hero) ── */
+#hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(2,4,10,0.52) 0%, transparent 22%),
+    linear-gradient(0deg,   rgba(2,4,10,0.72) 0%, transparent 42%);
+  pointer-events: none;
+  opacity: 0;
+}
+#hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 5vw 9vh;
+  pointer-events: none;
+}
+.hero-heading {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(48px, 6.5vw, 104px);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: #F4F1EC;
+  opacity: 0;
+  transform: translateY(22px);
+}
+.hero-heading em { font-style: italic; color: #C8A97E; }
+.hero-sub {
+  font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  font-size: clamp(11px, 1vw, 13px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(244,241,236,0.45);
+  margin-top: 1.4rem;
+  opacity: 0;
+  transform: translateY(12px);
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar" aria-label="Main navigation">
+  <div class="nav-pill">
+
+    <!-- Logo mark (animated circle, ported from Navbar1 motion.div) -->
+    <a class="nav-logo-wrap" href="#" aria-label="Astra home">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="16" fill="url(#nav-logo-grad)"/>
+        <defs>
+          <linearGradient id="nav-logo-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#C8A97E"/>
+            <stop offset="1" stopColor="#7A4E28"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="nav-links-wrap">
+      <a href="#" data-section="home">Home</a>
+      <a href="#s-services"      data-section="s-services">Models</a>
+      <a href="#s-pricing"       data-section="s-pricing">Pricing</a>
+      <a href="#s-testimonials"  data-section="s-testimonials">Stories</a>
+    </div>
+
+    <!-- Desktop CTA -->
+    <a href="#s-legacy" class="nav-pill-cta">Reserve</a>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+  </div>
+</nav>
+
+<!-- Mobile overlay (lives outside #navbar to avoid transform stacking-context issue) -->
+<div class="nav-mobile-overlay" id="nav-mobile-overlay" aria-hidden="true">
+  <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Close menu">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <div class="nav-mobile-links">
+    <a href="#">Home</a>
+    <a href="#s-services">Models</a>
+    <a href="#s-pricing">Pricing</a>
+    <a href="#s-testimonials">Stories</a>
+    <a href="#s-legacy">Reserve</a>
+  </div>
+  <div class="nav-mobile-cta">
+    <a href="#s-legacy">Reserve Your Astra</a>
+  </div>
+</div>
+
+<div id="loader">
+  <div id="progress-track"><div id="progress-fill"></div></div>
+</div>
+
+<div id="scroll-root">
+  <div id="sticky-hero">
+    <canvas id="c"></canvas>
+    <div id="hero-vignette"></div>
+    <div id="hero-overlay">
+      <h1 class="hero-heading">Power without<br><em>compromise.</em></h1>
+      <p class="hero-sub">The all-new Astra &mdash; Arriving 2026</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DISCOVERY
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-discovery">
+  <div class="discover-inner">
+    <p class="cs-eyebrow" data-reveal>Chapter I</p>
+    <h2 class="cs-headline discover-headline" aria-label="Born from the Edge">
+      <span class="cs-line">Born from</span>
+      <span class="cs-line cs-line--gold">the Edge.</span>
+    </h2>
+    <p class="cs-body" data-reveal>
+      Not designed to impress.<br>Engineered to be impossible to forget.
+    </p>
+    <div class="discover-rule" id="discover-rule"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DESIGN LANGUAGE
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-design">
+  <div class="design-grid">
+    <div class="design-visual">
+      <div class="design-light"></div>
+      <div class="design-vline"></div>
+    </div>
+    <div class="design-copy">
+      <p class="cs-eyebrow" data-reveal>Design Language</p>
+      <h2 class="cs-headline" data-reveal>
+        Every curve<br>has <em>a purpose.</em>
+      </h2>
+      <p class="cs-body" data-reveal>
+        Form follows function — until they become indistinguishable.
+        Three years of aerodynamic obsession refined into lines that
+        are as efficient as they are beautiful.
+      </p>
+      <div class="design-detail" data-reveal>
+        <span>Drag coefficient</span>
+        <b>Cd 0.28</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SERVICES  (CardsParallax — stacked sticky)
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-services">
+  <div class="srv-header">
+    <p class="cs-eyebrow cs-eyebrow--center" data-reveal>The Lineup</p>
+    <h2 class="cs-headline srv-headline" data-reveal>
+      Choose your <em>obsession.</em>
+    </h2>
+  </div>
+  <div class="srv-stack">
+
+    <div class="srv-card">
+      <div class="srv-card-bg srv-bg-1"></div>
+      <div class="srv-box">
+        <span class="srv-tag">Model I</span>
+        <h3 class="srv-title">ASTRA GT</h3>
+        <p class="srv-desc">for those who understand that speed is an art form.</p>
+        <span class="srv-price">From $180,000</span>
+      </div>
+    </div>
+
+    <div class="srv-card">
+      <div class="srv-card-bg srv-bg-2"></div>
+      <div class="srv-box">
+        <span class="srv-tag">Model II</span>
+        <h3 class="srv-title">ASTRA RS</h3>
+        <p class="srv-desc">raw. unfiltered. nothing hidden, nothing softened.</p>
+        <span class="srv-price">From $240,000</span>
+      </div>
+    </div>
+
+    <div class="srv-card">
+      <div class="srv-card-bg srv-bg-3"></div>
+      <div class="srv-box">
+        <span class="srv-tag">Model III</span>
+        <h3 class="srv-title">ASTRA ONE</h3>
+        <p class="srv-desc">the pinnacle. every limit reconsidered, then exceeded.</p>
+        <span class="srv-price">From $420,000</span>
+      </div>
+    </div>
+
+    <div class="srv-card">
+      <div class="srv-card-bg srv-bg-4"></div>
+      <div class="srv-box srv-box--noir">
+        <span class="srv-tag">Limited to 12</span>
+        <h3 class="srv-title srv-title--gold">ASTRA NOIR</h3>
+        <p class="srv-desc">for those who know. allocation by invitation only.</p>
+        <span class="srv-price">From $680,000</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     POWER
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-power">
+  <div class="power-inner">
+    <p class="cs-eyebrow cs-eyebrow--center" data-reveal>The Numbers</p>
+    <div class="power-stats">
+      <div class="stat-block">
+        <span class="stat-num" data-count="2.9" data-decimal>0.0</span>
+        <span class="stat-unit">sec</span>
+        <p class="stat-label">0 – 100 km/h</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-block">
+        <span class="stat-num" data-count="1015">0</span>
+        <span class="stat-unit">hp</span>
+        <p class="stat-label">Combined output</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-block">
+        <span class="stat-num" data-count="340">0</span>
+        <span class="stat-unit">km/h</span>
+        <p class="stat-label">Top velocity</p>
+      </div>
+    </div>
+    <p class="power-quote" data-reveal>
+      Power that changes your<br>perception of <em>acceleration.</em>
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PRICING  (PricingSection — monthly/annual toggle)
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-pricing">
+  <div class="pricing-header">
+    <p class="cs-eyebrow cs-eyebrow--center" data-reveal>Reserve Yours</p>
+    <h2 class="cs-headline pricing-headline" data-reveal>
+      Simple.<br><em>Exceptional.</em>
+    </h2>
+    <p class="cs-body pricing-sub" data-reveal>
+      Three paths to ownership. Every tier includes priority delivery
+      scheduling, a dedicated concierge, and lifetime access to Astra events.
+    </p>
+  </div>
+
+  <div class="pricing-toggle">
+    <div class="pricing-pill-wrap" id="pricing-pill-wrap">
+      <div class="pricing-sliding-pill" id="pricing-sliding-pill"></div>
+      <button class="pricing-toggle-btn active" id="btn-monthly"
+              onclick="astraPricing.set(true)">Monthly</button>
+      <button class="pricing-toggle-btn" id="btn-annual"
+              onclick="astraPricing.set(false)">
+        Annual <span class="pricing-save-tag">Save 20%</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="pricing-grid">
+
+    <!-- Discovery -->
+    <div class="pricing-card" data-reveal>
+      <p class="pricing-plan-name">Discovery</p>
+      <p class="pricing-card-desc">Secure your place in the allocation.<br>Begin the journey.</p>
+      <div class="pricing-price-box">
+        <span class="pricing-amount" data-mo="480" data-yr="384">$480</span>
+        <span class="pricing-period">per month</span>
+        <span class="pricing-billing-note">Billed Monthly</span>
+      </div>
+      <ul class="pricing-features">
+        <li>Priority allocation position</li>
+        <li>Full configuration access</li>
+        <li>Delivery scheduling</li>
+        <li>Astra Digital Passport</li>
+      </ul>
+      <a href="#" class="pricing-cta">Reserve — Discovery</a>
+    </div>
+
+    <!-- Reserve (Popular) -->
+    <div class="pricing-card pricing-card--popular" data-reveal>
+      <div class="pricing-badge">Most Chosen</div>
+      <p class="pricing-plan-name">Reserve</p>
+      <p class="pricing-card-desc">Full personalisation suite.<br>The preferred path.</p>
+      <div class="pricing-price-box">
+        <span class="pricing-amount" data-mo="960" data-yr="768">$960</span>
+        <span class="pricing-period">per month</span>
+        <span class="pricing-billing-note">Billed Monthly</span>
+      </div>
+      <ul class="pricing-features">
+        <li>Everything in Discovery</li>
+        <li>Bespoke interior programme</li>
+        <li>Dedicated liaison officer</li>
+        <li>Factory delivery experience</li>
+        <li>5-year maintenance included</li>
+      </ul>
+      <a href="#" class="pricing-cta">Reserve — Priority</a>
+    </div>
+
+    <!-- Founder's -->
+    <div class="pricing-card" data-reveal>
+      <p class="pricing-plan-name">Founder's Edition</p>
+      <p class="pricing-card-desc">The full Astra experience.<br>Numbered. Permanent.</p>
+      <div class="pricing-price-box">
+        <span class="pricing-amount" data-mo="1980" data-yr="1584">$1,980</span>
+        <span class="pricing-period">per month</span>
+        <span class="pricing-billing-note">Billed Monthly</span>
+      </div>
+      <ul class="pricing-features">
+        <li>Everything in Reserve</li>
+        <li>Founding member number</li>
+        <li>Full bespoke commission</li>
+        <li>Lifetime Astra membership</li>
+        <li>Private driving events</li>
+        <li>Heritage documentation</li>
+      </ul>
+      <a href="#" class="pricing-cta">Reserve — Founder's</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     TESTIMONIALS  (TestimonialsColumn — infinite scroll)
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-testimonials">
+  <div class="test-header">
+    <p class="cs-eyebrow cs-eyebrow--center" data-reveal>Owner Stories</p>
+    <h2 class="cs-headline test-headline" data-reveal>
+      What they <em>remember.</em>
+    </h2>
+  </div>
+
+  <div class="test-columns">
+
+    <!-- Column 1 — scrolls up -->
+    <div class="test-col">
+      <div class="test-col-inner">
+        <!-- original -->
+        <div class="test-card">
+          <p class="test-text">"The moment I pressed the accelerator, I understood what Astra means by permanent memory."</p>
+          <div class="test-author">
+            <div class="test-avatar">JR</div>
+            <div><p class="test-name">James R.</p><p class="test-role">Early Adopter</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"I've owned three hypercars. None of them communicated with me the way the Astra does."</p>
+          <div class="test-author">
+            <div class="test-avatar">SM</div>
+            <div><p class="test-name">Sophia M.</p><p class="test-role">Collector</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"The craftsmanship is unlike anything I've seen outside of a museum. And yet it moves."</p>
+          <div class="test-author">
+            <div class="test-avatar">DK</div>
+            <div><p class="test-name">Daniel K.</p><p class="test-role">Automotive Historian</p></div>
+          </div>
+        </div>
+        <!-- duplicate for seamless loop -->
+        <div class="test-card">
+          <p class="test-text">"The moment I pressed the accelerator, I understood what Astra means by permanent memory."</p>
+          <div class="test-author">
+            <div class="test-avatar">JR</div>
+            <div><p class="test-name">James R.</p><p class="test-role">Early Adopter</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"I've owned three hypercars. None of them communicated with me the way the Astra does."</p>
+          <div class="test-author">
+            <div class="test-avatar">SM</div>
+            <div><p class="test-name">Sophia M.</p><p class="test-role">Collector</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"The craftsmanship is unlike anything I've seen outside of a museum. And yet it moves."</p>
+          <div class="test-author">
+            <div class="test-avatar">DK</div>
+            <div><p class="test-name">Daniel K.</p><p class="test-role">Automotive Historian</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2 — scrolls down (reverse) -->
+    <div class="test-col">
+      <div class="test-col-inner">
+        <!-- original -->
+        <div class="test-card">
+          <p class="test-text">"Every detail tells a story. You don't just drive it — you have a conversation with it."</p>
+          <div class="test-author">
+            <div class="test-avatar">IT</div>
+            <div><p class="test-name">Isabella T.</p><p class="test-role">Design Director</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"Reserved mine after two minutes behind the wheel. There was no hesitation whatsoever."</p>
+          <div class="test-author">
+            <div class="test-avatar">ML</div>
+            <div><p class="test-name">Marcus L.</p><p class="test-role">First Owner</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"Astra didn't build a car. They composed an experience you carry with you long after."</p>
+          <div class="test-author">
+            <div class="test-avatar">PN</div>
+            <div><p class="test-name">Priya N.</p><p class="test-role">Automotive Journalist</p></div>
+          </div>
+        </div>
+        <!-- duplicate -->
+        <div class="test-card">
+          <p class="test-text">"Every detail tells a story. You don't just drive it — you have a conversation with it."</p>
+          <div class="test-author">
+            <div class="test-avatar">IT</div>
+            <div><p class="test-name">Isabella T.</p><p class="test-role">Design Director</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"Reserved mine after two minutes behind the wheel. There was no hesitation whatsoever."</p>
+          <div class="test-author">
+            <div class="test-avatar">ML</div>
+            <div><p class="test-name">Marcus L.</p><p class="test-role">First Owner</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"Astra didn't build a car. They composed an experience you carry with you long after."</p>
+          <div class="test-author">
+            <div class="test-avatar">PN</div>
+            <div><p class="test-name">Priya N.</p><p class="test-role">Automotive Journalist</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3 — scrolls up, faster -->
+    <div class="test-col">
+      <div class="test-col-inner">
+        <!-- original -->
+        <div class="test-card">
+          <p class="test-text">"I've been waiting for something to make me feel this way about driving again. This is it."</p>
+          <div class="test-author">
+            <div class="test-avatar">AB</div>
+            <div><p class="test-name">Alexandre B.</p><p class="test-role">Racing Driver</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"The silence at speed is deafening. It shouldn't be possible. But here we are."</p>
+          <div class="test-author">
+            <div class="test-avatar">CD</div>
+            <div><p class="test-name">Camille D.</p><p class="test-role">Aerospace Engineer</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"Delivery day was the best day of the year. No competition. Nothing even close."</p>
+          <div class="test-author">
+            <div class="test-avatar">OH</div>
+            <div><p class="test-name">Oliver H.</p><p class="test-role">Founding Owner</p></div>
+          </div>
+        </div>
+        <!-- duplicate -->
+        <div class="test-card">
+          <p class="test-text">"I've been waiting for something to make me feel this way about driving again. This is it."</p>
+          <div class="test-author">
+            <div class="test-avatar">AB</div>
+            <div><p class="test-name">Alexandre B.</p><p class="test-role">Racing Driver</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"The silence at speed is deafening. It shouldn't be possible. But here we are."</p>
+          <div class="test-author">
+            <div class="test-avatar">CD</div>
+            <div><p class="test-name">Camille D.</p><p class="test-role">Aerospace Engineer</p></div>
+          </div>
+        </div>
+        <div class="test-card">
+          <p class="test-text">"Delivery day was the best day of the year. No competition. Nothing even close."</p>
+          <div class="test-author">
+            <div class="test-avatar">OH</div>
+            <div><p class="test-name">Oliver H.</p><p class="test-role">Founding Owner</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ATMOSPHERE (Three.js particles)
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-atmosphere">
+  <canvas id="three-canvas"></canvas>
+  <div class="atm-copy">
+    <h2 class="atm-headline" data-reveal>
+      Where speed<br>becomes <em>art.</em>
+    </h2>
+    <p class="cs-body atm-body" data-reveal>
+      Some machines are driven.<br>
+      Others are <em style="color:#C8A97E;font-style:italic;">felt.</em>
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     LEGACY / CTA
+══════════════════════════════════════════════ -->
+<section class="cs" id="s-legacy">
+  <div class="legacy-inner">
+    <div class="legacy-rule" data-reveal></div>
+    <p class="cs-eyebrow cs-eyebrow--center" data-reveal style="margin-top:4rem">The Experience</p>
+    <h2 class="legacy-headline" data-reveal>
+      One drive.<br><em>Permanent memory.</em>
+    </h2>
+    <p class="cs-body legacy-body" data-reveal>
+      Limited allocations available.<br>Reserve your configuration.
+    </p>
+    <a href="#" class="legacy-btn" data-reveal>
+      <span>Configure Yours</span>
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <div class="legacy-rule" data-reveal style="margin-top:4rem"></div>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  const TOTAL  = 211;
+  const PREFIX = './frames/ezgif-frame-';
+
+  const canvas = document.getElementById('c');
+  const ctx    = canvas.getContext('2d', { alpha: false });
+  const root   = document.getElementById('scroll-root');
+  const loader = document.getElementById('loader');
+  const fill   = document.getElementById('progress-fill');
+
+  /* ── State ── */
+  const imgs = new Array(TOTAL);
+  let loaded       = 0;
+  let currentIdx   = 0;
+  let targetIdx    = 0;
+  let canvasW      = 0;
+  let canvasH      = 0;
+
+  /* ── Canvas resize ── */
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvasW = canvas.width  = Math.round(window.innerWidth  * dpr);
+    canvasH = canvas.height = Math.round(window.innerHeight * dpr);
+    paint(currentIdx);
+  }
+
+  /* ── Cover-fill draw ── */
+  function paint(idx) {
+    const img = imgs[idx];
+    if (!img || !img.complete || !img.naturalWidth) return;
+
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+    const scale = Math.max(canvasW / iw, canvasH / ih);
+    const w = iw * scale;
+    const h = ih * scale;
+    const x = (canvasW - w) * 0.5;
+    const y = (canvasH - h) * 0.5;
+
+    ctx.drawImage(img, x, y, w, h);
+  }
+
+  /* ── Scroll → frame index ── */
+  function onScroll() {
+    const maxScroll = root.offsetHeight - window.innerHeight;
+    const t = Math.max(0, Math.min(1, window.scrollY / maxScroll));
+    targetIdx = Math.round(t * (TOTAL - 1));
+  }
+
+  /* ── RAF render loop ── */
+  function loop() {
+    if (targetIdx !== currentIdx) {
+      currentIdx = targetIdx;
+      paint(currentIdx);
+    }
+    requestAnimationFrame(loop);
+  }
+
+  /* ── Preload all frames ── */
+  function preload() {
+    return new Promise(resolve => {
+      for (let i = 0; i < TOTAL; i++) {
+        const img = new Image();
+        const n = String(i + 1).padStart(3, '0');
+        img.onload = img.onerror = () => {
+          loaded++;
+          fill.style.width = (loaded / TOTAL * 100) + '%';
+          if (loaded === TOTAL) resolve();
+        };
+        img.src = PREFIX + n + '.jpg';
+        imgs[i] = img;
+      }
+    });
+  }
+
+  /* ── Boot ── */
+  async function init() {
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    await preload();
+
+    paint(0);
+    requestAnimationFrame(loop);
+
+    loader.classList.add('fade-out');
+    setTimeout(() => loader.remove(), 750);
+  }
+
+  init();
+})();
+</script>
+
+<!-- Component styles: Services · Pricing · Testimonials -->
+<style>
+/* ═══════════════════════════════════════════
+   SERVICES  (stacked sticky cards — ported from CardsParallax)
+═══════════════════════════════════════════ */
+#s-services {
+  overflow: visible;          /* sticky needs visible on ancestor */
+  background: #02040A;
+}
+.srv-header {
+  padding: 14vh 8vw 4vh;
+  text-align: center;
+}
+.srv-headline {
+  font-size: clamp(52px, 7.5vw, 115px);
+}
+.srv-stack { }  /* natural flow; children are sticky */
+
+.srv-card {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.srv-card:nth-child(1) { z-index: 1; }
+.srv-card:nth-child(2) { z-index: 2; }
+.srv-card:nth-child(3) { z-index: 3; }
+.srv-card:nth-child(4) { z-index: 4; }
+
+.srv-card-bg {
+  position: absolute;
+  inset: 0;
+}
+.srv-card-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.srv-bg-1 { background: linear-gradient(145deg, #08091a 0%, #050912 100%); }
+.srv-bg-1::after { background: radial-gradient(ellipse 65% 55% at 68% 52%, rgba(80,110,220,0.05) 0%, transparent 70%); }
+.srv-bg-2 { background: linear-gradient(145deg, #0b0d18 0%, #07090f 100%); }
+.srv-bg-2::after { background: radial-gradient(ellipse 55% 45% at 28% 55%, rgba(200,169,126,0.07) 0%, transparent 65%); }
+.srv-bg-3 { background: linear-gradient(145deg, #0a0c16 0%, #060810 100%); }
+.srv-bg-3::after { background: radial-gradient(ellipse 50% 60% at 50% 48%, rgba(200,169,126,0.10) 0%, transparent 65%); }
+.srv-bg-4 { background: linear-gradient(180deg, #050508 0%, #020305 100%); }
+.srv-bg-4::after { background: radial-gradient(ellipse 38% 38% at 50% 50%, rgba(200,169,126,0.05) 0%, transparent 68%); }
+
+/* Light sweep on each card (re-uses design section animation) */
+.srv-card-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -80%;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.018), transparent);
+  transform: skewX(-12deg);
+  animation: srv-sweep 10s ease-in-out infinite;
+}
+@keyframes srv-sweep {
+  0%   { left: -80%; opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: 140%; opacity: 0; }
+}
+.srv-card:nth-child(2) .srv-card-bg::before { animation-delay: -3s; }
+.srv-card:nth-child(3) .srv-card-bg::before { animation-delay: -6s; }
+.srv-card:nth-child(4) .srv-card-bg::before { animation-delay: -1s; }
+
+.srv-box {
+  position: relative;
+  z-index: 2;
+  width: min(700px, 88vw);
+  padding: 4rem 3.5rem;
+  text-align: center;
+  border: 1px solid rgba(244,241,236,0.06);
+  background: rgba(5,7,15,0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.srv-box--noir {
+  border-color: rgba(200,169,126,0.14);
+}
+
+.srv-tag {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(200,169,126,0.6);
+  margin-bottom: 1.5rem;
+}
+.srv-title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(52px, 7.5vw, 96px);
+  font-weight: 300;
+  color: #F4F1EC;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.2rem;
+}
+.srv-title--gold { color: #C8A97E; }
+.srv-desc {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(14px, 1.2vw, 16px);
+  color: rgba(244,241,236,0.38);
+  line-height: 1.65;
+  max-width: 400px;
+  margin: 0 auto 2.5rem;
+  letter-spacing: 0.02em;
+}
+.srv-price {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(200,169,126,0.65);
+  border-top: 1px solid rgba(244,241,236,0.07);
+  padding-top: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════
+   PRICING  (ported from PricingSection)
+═══════════════════════════════════════════ */
+#s-pricing {
+  padding: 14vh 4vw 12vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #020408;
+}
+.pricing-header {
+  text-align: center;
+  max-width: 680px;
+  margin-bottom: 4rem;
+}
+.pricing-headline { font-size: clamp(44px, 6vw, 95px); }
+.pricing-sub { font-size: clamp(14px, 1.2vw, 16px); max-width: 460px; margin: 0 auto; }
+
+/* Toggle */
+.pricing-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4.5rem;
+}
+.pricing-pill-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(244,241,236,0.04);
+  border: 1px solid rgba(244,241,236,0.07);
+  border-radius: 100px;
+  padding: 4px;
+}
+.pricing-sliding-pill {
+  position: absolute;
+  top: 4px; left: 4px;
+  height: calc(100% - 8px);
+  background: rgba(200,169,126,0.10);
+  border: 1px solid rgba(200,169,126,0.35);
+  border-radius: 100px;
+  transition: left 0.38s cubic-bezier(0.4,0,0.2,1),
+              width 0.38s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+.pricing-toggle-btn {
+  position: relative;
+  z-index: 1;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(244,241,236,0.35);
+  background: none;
+  border: none;
+  padding: 0.85rem 1.8rem;
+  cursor: pointer;
+  border-radius: 100px;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+.pricing-toggle-btn.active { color: #C8A97E; }
+.pricing-save-tag {
+  font-size: 9px;
+  color: rgba(200,169,126,0.5);
+  letter-spacing: 0.1em;
+  margin-left: 0.3rem;
+}
+
+/* Cards grid */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1080px;
+  width: 100%;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .pricing-card--popular { transform: none !important; }
+}
+
+.pricing-card {
+  position: relative;
+  border: 1px solid rgba(244,241,236,0.07);
+  padding: 2.5rem 1.8rem;
+  background: rgba(6,9,18,0.55);
+  display: flex;
+  flex-direction: column;
+}
+.pricing-card--popular {
+  border-color: rgba(200,169,126,0.32);
+  background: rgba(200,169,126,0.025);
+  transform: translateY(-14px);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #02040A;
+  background: #C8A97E;
+  padding: 0.38rem 1.1rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.pricing-plan-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(244,241,236,0.4);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.pricing-card--popular .pricing-plan-name { color: rgba(200,169,126,0.8); }
+
+.pricing-card-desc {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  color: rgba(244,241,236,0.28);
+  text-align: center;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+}
+
+.pricing-price-box { text-align: center; margin-bottom: 2rem; }
+.pricing-amount {
+  display: block;
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(48px, 5.5vw, 76px);
+  font-weight: 300;
+  color: #F4F1EC;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+.pricing-period {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(244,241,236,0.25);
+  margin-top: 0.5rem;
+}
+.pricing-billing-note {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  color: rgba(244,241,236,0.18);
+  letter-spacing: 0.12em;
+  margin-top: 0.3rem;
+}
+
+.pricing-features {
+  list-style: none;
+  border-top: 1px solid rgba(244,241,236,0.06);
+  padding-top: 1.4rem;
+  margin-bottom: 2.2rem;
+  flex: 1;
+}
+.pricing-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  color: rgba(244,241,236,0.42);
+  line-height: 1.5;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(244,241,236,0.04);
+}
+.pricing-features li::before {
+  content: '—';
+  color: rgba(200,169,126,0.45);
+  flex-shrink: 0;
+}
+.pricing-card--popular .pricing-features li::before { color: #C8A97E; }
+
+.pricing-cta {
+  display: block;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  padding: 1.1rem;
+  border: 1px solid rgba(244,241,236,0.12);
+  color: rgba(244,241,236,0.5);
+  text-decoration: none;
+  transition: border-color 0.4s, color 0.4s, background 0.4s;
+}
+.pricing-card--popular .pricing-cta { border-color: rgba(200,169,126,0.45); color: #C8A97E; }
+.pricing-cta:hover { background: rgba(200,169,126,0.06); border-color: #C8A97E; color: #F4F1EC; }
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS  (ported from TestimonialsColumn — infinite scroll)
+═══════════════════════════════════════════ */
+#s-testimonials {
+  padding: 14vh 0 0;
+  overflow: hidden;
+  background: #02040A;
+}
+.test-header {
+  text-align: center;
+  padding: 0 8vw 8vh;
+}
+.test-headline { font-size: clamp(44px, 6vw, 95px); }
+
+.test-columns {
+  display: flex;
+  gap: 1.4rem;
+  justify-content: center;
+  height: 68vh;
+  overflow: hidden;
+  /* fade mask top + bottom */
+  mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+.test-col { display: flex; flex-direction: column; gap: 1.4rem; flex-shrink: 0; width: 320px; }
+.test-col-inner { display: flex; flex-direction: column; gap: 1.4rem; }
+
+/* Column 1 — scroll up */
+.test-col:nth-child(1) .test-col-inner { animation: t-up 24s linear infinite; }
+/* Column 2 — scroll down */
+.test-col:nth-child(2) .test-col-inner { animation: t-down 30s linear infinite; }
+/* Column 3 — scroll up, different speed */
+.test-col:nth-child(3) .test-col-inner { animation: t-up 20s linear infinite; }
+
+@keyframes t-up   { from { transform: translateY(0); }    to { transform: translateY(-50%); } }
+@keyframes t-down { from { transform: translateY(-50%); } to { transform: translateY(0); }    }
+
+/* Pause on hover */
+.test-col:hover .test-col-inner { animation-play-state: paused; }
+
+.test-card {
+  background: rgba(6,9,18,0.65);
+  border: 1px solid rgba(244,241,236,0.07);
+  padding: 1.8rem;
+  flex-shrink: 0;
+  transition: border-color 0.35s ease;
+}
+.test-card:hover { border-color: rgba(200,169,126,0.18); }
+
+.test-text {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(244,241,236,0.72);
+  line-height: 1.65;
+  margin-bottom: 1.4rem;
+}
+.test-author { display: flex; align-items: center; gap: 0.85rem; }
+.test-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(200,169,126,0.1);
+  border: 1px solid rgba(200,169,126,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  color: rgba(200,169,126,0.7);
+  flex-shrink: 0;
+}
+.test-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  color: rgba(244,241,236,0.65);
+  margin-bottom: 2px;
+}
+.test-role {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  color: rgba(244,241,236,0.28);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+@media (max-width: 800px) {
+  .test-col:nth-child(3) { display: none; }
+  .test-col { width: 280px; }
+}
+</style>
+
+<!-- CDN: GSAP + ScrollTrigger + Three.js -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+
+<!-- ── Section animations ── -->
+<script>
+(function () {
+  'use strict';
+  if (typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* — Generic fade-up for [data-reveal] — */
+  document.querySelectorAll('[data-reveal]').forEach(el => {
+    gsap.fromTo(el,
+      { opacity: 0, y: 28 },
+      {
+        opacity: 1, y: 0,
+        duration: 1.15,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      }
+    );
+  });
+
+  /* — Discovery: clip-path line reveals — */
+  document.querySelectorAll('#s-discovery .cs-line').forEach((line, i) => {
+    gsap.fromTo(line,
+      { clipPath: 'inset(0 0 100% 0)' },
+      {
+        clipPath: 'inset(0 0 0% 0)',
+        duration: 1.25,
+        ease: 'power4.out',
+        delay: i * 0.2,
+        scrollTrigger: { trigger: '#s-discovery', start: 'top 72%', once: true }
+      }
+    );
+  });
+
+  /* — Discovery: rule extension — */
+  gsap.to('#discover-rule', {
+    width: '65%',
+    duration: 2,
+    ease: 'power3.inOut',
+    scrollTrigger: { trigger: '#s-discovery', start: 'top 60%', once: true }
+  });
+
+  /* — Power: stat blocks fade in + counters — */
+  gsap.fromTo('.stat-block',
+    { opacity: 0, y: 22 },
+    {
+      opacity: 1, y: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.14,
+      scrollTrigger: { trigger: '.power-stats', start: 'top 80%', once: true }
+    }
+  );
+
+  gsap.fromTo('.stat-divider',
+    { opacity: 0, scaleY: 0 },
+    {
+      opacity: 1, scaleY: 1,
+      duration: 0.7,
+      ease: 'power3.out',
+      stagger: 0.15,
+      transformOrigin: 'top center',
+      scrollTrigger: { trigger: '.power-stats', start: 'top 80%', once: true }
+    }
+  );
+
+  document.querySelectorAll('.stat-num[data-count]').forEach((el, i) => {
+    const target  = parseFloat(el.dataset.count);
+    const decimal = 'decimal' in el.dataset;
+    ScrollTrigger.create({
+      trigger: '.power-stats',
+      start: 'top 80%',
+      once: true,
+      onEnter() {
+        const o = { v: 0 };
+        gsap.to(o, {
+          v: target,
+          duration: 1.7,
+          delay: i * 0.14,
+          ease: 'power2.out',
+          onUpdate() {
+            el.textContent = decimal ? o.v.toFixed(1) : Math.round(o.v);
+          }
+        });
+      }
+    });
+  });
+
+  /* — Hero: navbar + heading + subtext enter at 50% hero scroll — */
+  ScrollTrigger.create({
+    trigger: '#scroll-root',
+    start: () => {
+      const root   = document.getElementById('scroll-root');
+      const travel = root.offsetHeight - window.innerHeight;
+      return `top -${travel * 0.5}px`;
+    },
+    once: true,
+    onEnter() {
+      const ease = 'power3.out';
+
+      /* Unlock pointer events on nav */
+      document.getElementById('navbar').style.pointerEvents = 'auto';
+
+      /* Navbar slides down */
+      gsap.to('#navbar', { opacity: 1, y: 0, duration: 1.1, ease });
+
+      /* Bottom + top vignette fades in for legibility */
+      gsap.to('#hero-vignette', { opacity: 1, duration: 1.6, ease: 'power2.out' });
+
+      /* Heading rises */
+      gsap.to('.hero-heading', { opacity: 1, y: 0, duration: 1.3, ease, delay: 0.22 });
+
+      /* Subtext follows */
+      gsap.to('.hero-sub', { opacity: 1, y: 0, duration: 1.1, ease, delay: 0.58 });
+    }
+  });
+})();
+</script>
+
+<!-- canvas-confetti (used by pricing toggle) -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<!-- ── Pricing toggle (ported from PricingSection) ── -->
+<script>
+const astraPricing = (function () {
+  'use strict';
+  let monthly = true;
+  const EASE = typeof gsap !== 'undefined' ? 'power2.out' : null;
+
+  function pill() {
+    const btn   = document.getElementById(monthly ? 'btn-monthly' : 'btn-annual');
+    const wrap  = document.getElementById('pricing-pill-wrap');
+    const slide = document.getElementById('pricing-sliding-pill');
+    if (!btn || !wrap || !slide) return;
+    const wr = wrap.getBoundingClientRect();
+    const br = btn.getBoundingClientRect();
+    slide.style.left   = (br.left - wr.left) + 'px';
+    slide.style.width  = br.width + 'px';
+    slide.style.height = br.height + 'px';
+    slide.style.top    = (br.top  - wr.top) + 'px';
+  }
+
+  function updatePrices() {
+    document.querySelectorAll('.pricing-amount').forEach(el => {
+      const target = parseInt(monthly ? el.dataset.mo : el.dataset.yr);
+      if (EASE) {
+        const o = { v: parseInt(el.textContent.replace(/\D/g, '')) || 0 };
+        gsap.to(o, {
+          v: target, duration: 0.55, ease: EASE,
+          onUpdate() { el.textContent = '$' + Math.round(o.v).toLocaleString(); }
+        });
+      } else {
+        el.textContent = '$' + target.toLocaleString();
+      }
+    });
+    document.querySelectorAll('.pricing-billing-note').forEach(el => {
+      el.textContent = monthly ? 'Billed Monthly' : 'Billed Annually';
+    });
+  }
+
+  function set(isMonthly) {
+    if (monthly === isMonthly) return;
+    monthly = isMonthly;
+
+    document.getElementById('btn-monthly').classList.toggle('active',  monthly);
+    document.getElementById('btn-annual').classList.toggle('active',  !monthly);
+
+    pill();
+    updatePrices();
+
+    /* confetti burst when switching to annual (from PricingToggle) */
+    if (!monthly && typeof confetti !== 'undefined') {
+      const btn = document.getElementById('btn-annual');
+      const r   = btn.getBoundingClientRect();
+      confetti({
+        particleCount: 70,
+        spread: 75,
+        origin: { x: (r.left + r.width / 2) / window.innerWidth,
+                  y: (r.top  + r.height / 2) / window.innerHeight },
+        colors: ['#C8A97E', '#F4F1EC', '#a08060'],
+        ticks: 260, gravity: 1.2, decay: 0.93, startVelocity: 26
+      });
+    }
+  }
+
+  /* initialise pill position after fonts load */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(pill, 120));
+  } else {
+    setTimeout(pill, 120);
+  }
+  window.addEventListener('resize', pill, { passive: true });
+
+  return { set };
+})();
+</script>
+
+<!-- ── Three.js atmosphere ── -->
+<script>
+(function () {
+  'use strict';
+  const canvas  = document.getElementById('three-canvas');
+  const section = document.getElementById('s-atmosphere');
+  if (!canvas || !section || typeof THREE === 'undefined') return;
+
+  const W = () => section.offsetWidth;
+  const H = () => section.offsetHeight;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setSize(W(), H());
+  renderer.setClearColor(0x02040A, 1);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(65, W() / H(), 0.1, 100);
+  camera.position.z = 5;
+
+  /* Gold dust */
+  const COUNT = 3000;
+  const pos   = new Float32Array(COUNT * 3);
+  const drift = new Float32Array(COUNT);
+  for (let i = 0; i < COUNT; i++) {
+    pos[i*3]   = (Math.random() - 0.5) * 18;
+    pos[i*3+1] = (Math.random() - 0.5) * 10;
+    pos[i*3+2] = (Math.random() - 0.5) * 8;
+    drift[i]   = 0.00015 + Math.random() * 0.0003;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const mat = new THREE.PointsMaterial({
+    size: 0.022, color: 0xC8A97E,
+    transparent: true, opacity: 0.48, sizeAttenuation: true
+  });
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+
+  /* Faint white sparkles */
+  const sp  = new Float32Array(600 * 3);
+  for (let i = 0; i < 600; i++) {
+    sp[i*3]   = (Math.random() - 0.5) * 12;
+    sp[i*3+1] = (Math.random() - 0.5) * 7;
+    sp[i*3+2] = (Math.random() - 0.5) * 5;
+  }
+  const geo2 = new THREE.BufferGeometry();
+  geo2.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+  scene.add(new THREE.Points(geo2, new THREE.PointsMaterial({
+    size: 0.007, color: 0xffffff,
+    transparent: true, opacity: 0.13, sizeAttenuation: true
+  })));
+
+  /* Mouse parallax */
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = (e.clientX / window.innerWidth  - 0.5) * 2;
+    my = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  let raf = null;
+  let t   = 0;
+
+  function tick() {
+    raf = requestAnimationFrame(tick);
+    t  += 0.0006;
+
+    const p = geo.attributes.position.array;
+    for (let i = 0; i < COUNT; i++) {
+      p[i*3+1] += drift[i];
+      if (p[i*3+1] > 5) p[i*3+1] = -5;
+    }
+    geo.attributes.position.needsUpdate = true;
+
+    pts.rotation.y  = t * 0.35;
+    pts.rotation.x  = Math.sin(t * 0.25) * 0.06;
+
+    camera.position.x += (mx * 0.35 - camera.position.x) * 0.022;
+    camera.position.y += (-my * 0.18 - camera.position.y) * 0.022;
+    camera.lookAt(scene.position);
+
+    renderer.render(scene, camera);
+  }
+
+  /* Only animate when section is visible */
+  const io = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { if (!raf) tick(); }
+    else { cancelAnimationFrame(raf); raf = null; }
+  }, { threshold: 0.05 });
+  io.observe(section);
+
+  window.addEventListener('resize', () => {
+    camera.aspect = W() / H();
+    camera.updateProjectionMatrix();
+    renderer.setSize(W(), H());
+  }, { passive: true });
+})();
+</script>
+
+<!-- ── Section visual enhancements + updated navbar JS ── -->
+<style>
+/* ═══════════════════════════════════════════
+   SECTION ATMOSPHERE OVERLAYS
+═══════════════════════════════════════════ */
+
+/* Discovery — centred gold glow */
+#s-discovery::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 75% 55% at 50% 52%, rgba(200,169,126,0.042) 0%, transparent 70%);
+  pointer-events: none;
+}
+.discover-inner { position: relative; z-index: 1; }
+
+/* Design — right-edge warm bleed on visual panel */
+.design-visual .design-light::before {
+  background: radial-gradient(ellipse 55% 70% at 32% 55%, rgba(200,169,126,0.07) 0%, transparent 65%),
+              radial-gradient(ellipse 30% 30% at 80% 25%, rgba(255,255,255,0.025) 0%, transparent 60%);
+}
+
+/* Services header — subtle glow behind eyebrow */
+#s-services .srv-header { position: relative; }
+#s-services .srv-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 55% 80% at 50% 55%, rgba(200,169,126,0.035) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Power — dot-grid that vignettes at edges */
+#s-power::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(244,241,236,0.045) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 8%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 8%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.power-inner { position: relative; z-index: 1; }
+
+/* Power — gold corner glows */
+#s-power::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 35% 35% at 5% 5%,  rgba(200,169,126,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 35% at 95% 95%, rgba(200,169,126,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pricing — gold + white scattered dot field (mirrors InteractiveStarfield) */
+#s-pricing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(200,169,126,0.09) 1px, transparent 1px),
+    radial-gradient(circle, rgba(244,241,236,0.03) 1px, transparent 1px);
+  background-size: 52px 52px, 28px 28px;
+  background-position: 0 0, 14px 14px;
+  mask-image: radial-gradient(ellipse 95% 95% at 50% 50%, black 8%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 95% 95% at 50% 50%, black 8%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+#s-pricing > * { position: relative; z-index: 1; }
+
+/* Testimonials — diagonal gold accent bleed on each side */
+#s-testimonials::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(112deg, rgba(200,169,126,0.018) 0%, transparent 38%),
+    linear-gradient(292deg, rgba(200,169,126,0.018) 0%, transparent 38%);
+  pointer-events: none;
+  z-index: 0;
+}
+#s-testimonials .test-header,
+#s-testimonials .test-columns { position: relative; z-index: 1; }
+
+/* Legacy — large faint ASTRA watermark */
+#s-legacy::before {
+  content: 'ASTRA';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(88px, 16.5vw, 256px);
+  font-weight: 300;
+  color: rgba(244,241,236,0.016);
+  letter-spacing: 0.44em;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+.legacy-inner { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════
+   FILM GRAIN — subtle animated noise overlay
+   (the texture that separates premium from plain)
+═══════════════════════════════════════════ */
+html::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)'/%3E%3C/svg%3E");
+  opacity: 0.038;
+  pointer-events: none;
+  z-index: 9990;
+  will-change: transform;
+  animation: grain 7s steps(8) infinite;
+}
+@keyframes grain {
+  0%,100% { transform: translate(0,0); }
+  12%  { transform: translate(-2%,-3%); }
+  25%  { transform: translate(3%, 1%); }
+  37%  { transform: translate(-1%, 4%); }
+  50%  { transform: translate(2%,-2%); }
+  62%  { transform: translate(-3%, 3%); }
+  75%  { transform: translate(1%,-4%); }
+  87%  { transform: translate(-2%, 2%); }
+}
+
+/* ═══════════════════════════════════════════
+   PER-SECTION AMBIENT BACKGROUNDS
+   Layered radial-gradient "light paintings"
+═══════════════════════════════════════════ */
+
+/* Discovery — warm gold bloom, cool indigo corners */
+#s-discovery {
+  background:
+    radial-gradient(ellipse 75% 55% at 50% 58%, rgba(200,169,126,0.07) 0%, transparent 68%),
+    radial-gradient(ellipse 50% 50% at 90% 15%,  rgba(55,65,165,0.055) 0%, transparent 68%),
+    radial-gradient(ellipse 50% 50% at 10% 85%,  rgba(55,65,165,0.045) 0%, transparent 68%),
+    #030509;
+}
+
+/* Design — richer visual panel; warm glow on copy side */
+.design-visual {
+  background: linear-gradient(148deg, #060b1c 0%, #0c0f22 50%, #060910 100%);
+}
+.design-copy {
+  background: linear-gradient(268deg, #030508 0%, #05070f 100%);
+}
+
+/* Services — navy-to-black with faint top gold */
+#s-services {
+  background:
+    radial-gradient(ellipse 70% 28% at 50% 0%, rgba(200,169,126,0.05) 0%, transparent 75%),
+    linear-gradient(180deg, #030509 0%, #02040A 30%),
+    #02040A;
+}
+
+/* Power — amber corner lanterns, deep navy center */
+#s-power {
+  background:
+    radial-gradient(ellipse 52% 52% at  8% 12%, rgba(200,169,126,0.06)  0%, transparent 65%),
+    radial-gradient(ellipse 52% 52% at 92% 88%, rgba(200,169,126,0.06)  0%, transparent 65%),
+    radial-gradient(ellipse 38% 38% at 90% 12%, rgba(45,55,140,0.045)   0%, transparent 65%),
+    radial-gradient(ellipse 38% 38% at 10% 88%, rgba(45,55,140,0.045)   0%, transparent 65%),
+    radial-gradient(ellipse 65% 65% at 50% 50%, rgba(8,10,28,0.75) 0%, transparent 80%),
+    #020408;
+}
+
+/* Pricing — deep indigo bloom top-right, warm gold bottom-left */
+#s-pricing {
+  background:
+    radial-gradient(ellipse 65% 60% at 88% 8%,  rgba(85,60,175,0.07)  0%, transparent 72%),
+    radial-gradient(ellipse 65% 60% at 12% 92%, rgba(200,169,126,0.055) 0%, transparent 72%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(15,12,40,0.55) 0%, transparent 80%),
+    #020408;
+}
+
+/* Testimonials — side pillar glows, cool top veil */
+#s-testimonials {
+  background:
+    radial-gradient(ellipse 40% 90% at 0%   50%, rgba(200,169,126,0.045) 0%, transparent 72%),
+    radial-gradient(ellipse 40% 90% at 100% 50%, rgba(200,169,126,0.045) 0%, transparent 72%),
+    radial-gradient(ellipse 65% 38% at 50% 0%,  rgba(50,60,148,0.05)   0%, transparent 70%),
+    #02040A;
+}
+
+/* Atmosphere — the Three.js canvas defines its own bg; reinforce the black */
+#s-atmosphere { background: #02040A; }
+
+/* Legacy — dramatic gold sun + deep purple wings */
+#s-legacy {
+  background:
+    radial-gradient(ellipse 72% 62% at 50% 50%, rgba(200,169,126,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 42% 80% at  5% 50%, rgba(65,30,130,0.055) 0%, transparent 70%),
+    radial-gradient(ellipse 42% 80% at 95% 50%, rgba(65,30,130,0.055) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 30% at 50% 100%, rgba(200,169,126,0.04) 0%, transparent 70%),
+    #030509;
+}
+</style>
+
+<!-- ── Navbar JS (mobile menu + smooth scroll + active tracking) ── -->
+<script>
+(function () {
+  'use strict';
+  const hamburger = document.getElementById('nav-hamburger');
+  const closeBtn  = document.getElementById('nav-mobile-close');
+  const overlay   = document.getElementById('nav-mobile-overlay');
+  if (!hamburger || !overlay) return;
+
+  function navOpen() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function navClose() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', navOpen);
+  closeBtn.addEventListener('click', navClose);
+
+  /* Smooth scroll for every anchor link in nav & overlay */
+  document.querySelectorAll(
+    '#navbar a[href^="#"], .nav-mobile-overlay a[href^="#"]'
+  ).forEach(link => {
+    link.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (overlay.classList.contains('open')) navClose();
+      if (!href || href === '#') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const target = document.querySelector(href);
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      }
+    });
+  });
+
+  /* Active link highlighting — IntersectionObserver per section */
+  const navLinks = document.querySelectorAll('.nav-links-wrap a[href^="#s-"]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l =>
+          l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id)
+        );
+      }
+    });
+  }, { threshold: 0.35 });
+
+  ['s-discovery','s-design','s-services','s-power','s-pricing','s-testimonials','s-atmosphere','s-legacy']
+    .forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+})();
+</script>
+
+</body>
+</html>
