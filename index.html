@@ -1074,6 +1074,7 @@ canvas {
 
   const TOTAL  = 211;
   const PREFIX = './frames/ezgif-frame-';
+  const EXT    = '.webp';
 
   const canvas = document.getElementById('c');
   const ctx    = canvas.getContext('2d', { alpha: false });
@@ -1136,7 +1137,7 @@ canvas {
           fill.style.width = (loaded / TOTAL * 100) + '%';
           if (loaded === TOTAL) resolve();
         };
-        img.src = PREFIX + n + '.jpg';
+        img.src = PREFIX + n + EXT;
         imgs[i] = img;
       }
     });
