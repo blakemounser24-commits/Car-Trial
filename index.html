@@ -6,26 +6,26 @@
 <title>Astra</title>
 <link rel="icon" type="image/jpeg" href="./favicon.jpg">
 <link rel="apple-touch-icon" href="./favicon.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-001.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-002.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-003.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-004.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-005.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-006.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-007.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-008.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-009.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-010.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-011.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-012.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-013.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-014.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-015.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-016.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-017.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-018.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-019.jpg">
-<link rel="preload" as="image" href="./frames/ezgif-frame-020.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-001.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-002.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-003.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-004.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-005.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-006.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-007.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-008.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-009.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-010.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-011.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-012.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-013.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-014.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-015.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-016.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-017.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-018.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-019.webp">
+<link rel="preload" as="image" href="./frames/ezgif-frame-020.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
@@ -1094,6 +1094,7 @@ canvas {
 
   const TOTAL  = 211;
   const PREFIX = './frames/ezgif-frame-';
+  const EXT    = '.webp';
 
   const canvas = document.getElementById('c');
   const ctx    = canvas.getContext('2d', { alpha: false });
@@ -1178,7 +1179,7 @@ canvas {
         const i = order[cursor++];
         const img = new Image();
         img.decoding = 'async';
-        img.src = PREFIX + String(i + 1).padStart(3, '0') + '.jpg';
+        img.src = PREFIX + String(i + 1).padStart(3, '0') + EXT;
         imgs[i] = img;
         img.onload = img.onerror = () => {
           loaded++;
