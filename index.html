@@ -16,6 +16,16 @@
 <link rel="preload" as="image" href="./frames/ezgif-frame-008.jpg">
 <link rel="preload" as="image" href="./frames/ezgif-frame-009.jpg">
 <link rel="preload" as="image" href="./frames/ezgif-frame-010.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-011.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-012.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-013.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-014.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-015.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-016.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-017.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-018.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-019.jpg">
+<link rel="preload" as="image" href="./frames/ezgif-frame-020.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
@@ -1145,28 +1155,41 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload: show hero after REVEAL_AT frames, load rest in background ── */
-  const REVEAL_AT = 20;
+  /* ── Preload: priority order → frame 0 first, keyframes every 10, then rest ── */
+  const CONCURRENCY = 10;
+
+  function buildPriorityOrder() {
+    const order = [0];
+    for (let i = 10; i < TOTAL; i += 10) order.push(i); // keyframes
+    for (let i = 0; i < TOTAL; i++) {
+      if (i % 10 !== 0) order.push(i); // fill-in frames
+    }
+    return order;
+  }
 
   function preload() {
     return new Promise(resolve => {
       let revealed = false;
+      const order = buildPriorityOrder();
+      let cursor = 0;
 
-      for (let i = 0; i < TOTAL; i++) {
+      function next() {
+        if (cursor >= order.length) return;
+        const i = order[cursor++];
         const img = new Image();
         img.decoding = 'async';
-        const n = String(i + 1).padStart(3, '0');
+        img.src = PREFIX + String(i + 1).padStart(3, '0') + '.jpg';
+        imgs[i] = img;
         img.onload = img.onerror = () => {
           loaded++;
           fill.style.width = (loaded / TOTAL * 100) + '%';
-          if (!revealed && loaded >= REVEAL_AT) {
-            revealed = true;
-            resolve(); // show hero early — rest keeps loading in background
-          }
+          if (!revealed && i === 0) { revealed = true; resolve(); }
+          next();
         };
-        img.src = PREFIX + n + '.jpg';
-        imgs[i] = img;
       }
+
+      // Saturate with CONCURRENCY parallel chains
+      for (let c = 0; c < Math.min(CONCURRENCY, TOTAL); c++) next();
     });
   }
 
