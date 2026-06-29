@@ -1142,7 +1142,7 @@ canvas {
   let maxScroll  = 1;
 
   function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvasW = canvas.width  = Math.round(window.innerWidth  * dpr);
     canvasH = canvas.height = Math.round(window.innerHeight * dpr);
     canvas.style.width  = window.innerWidth  + 'px';
@@ -1182,7 +1182,7 @@ canvas {
 
   /* ── Preload: frames 0-9 first, then keyframe every 5 across full range, then fill.
         Reveal after all keyframes load so the full scroll is smooth from the start. ── */
-  const CONCURRENCY  = 16;
+  const CONCURRENCY  = 32;
   const KF_STEP      = 5;
   const KF_COUNT     = 10 + Math.ceil((TOTAL - 10) / KF_STEP); // 10 + 41 = 51
   const REVEAL_AFTER = KF_COUNT;                                // wait for full coverage
