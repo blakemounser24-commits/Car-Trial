@@ -82,6 +82,16 @@ canvas {
   display: block;
 }
 
+#c {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
 /* ═══════════════════════════════════════════
    CINEMATIC SECTIONS
 ═══════════════════════════════════════════ */
@@ -633,7 +643,7 @@ canvas {
 
 <div id="scroll-root">
   <div id="sticky-hero">
-    <canvas id="c"></canvas>
+    <img id="c" alt="" draggable="false">
     <div id="hero-vignette"></div>
     <div id="hero-overlay">
       <h1 class="hero-heading">Power without<br><em>compromise.</em></h1>
@@ -1076,29 +1086,17 @@ canvas {
   const PREFIX = './frames/ezgif-frame-';
   const EXT    = '.webp';
 
-  const canvas = document.getElementById('c');
-  const ctx    = canvas.getContext('2d', { alpha: false });
-  const root   = document.getElementById('scroll-root');
-  const loader = document.getElementById('loader');
-  const fill   = document.getElementById('progress-fill');
+  const heroImg = document.getElementById('c');
+  const root    = document.getElementById('scroll-root');
+  const loader  = document.getElementById('loader');
+  const fill    = document.getElementById('progress-fill');
 
-  /* ── State ── */
   const imgs = new Array(TOTAL);
-  let loaded       = 0;
-  let currentIdx   = 0;
-  let targetIdx    = 0;
-  let canvasW      = 0;
-  let canvasH      = 0;
+  let loaded     = 0;
+  let currentIdx = 0;
+  let targetIdx  = 0;
 
-  /* ── Canvas resize — DPR capped at 1 for motion content (4× cheaper draw) ── */
-  function resize() {
-    canvasW = canvas.width  = window.innerWidth;
-    canvasH = canvas.height = window.innerHeight;
-    ctx.imageSmoothingEnabled = false;
-    paint(currentIdx);
-  }
-
-  /* ── Cover-fill draw (nearest loaded frame fallback) ── */
+  /* ── Paint: swap img src — GPU compositor handles cover scaling ── */
   function paint(idx) {
     let img = imgs[idx];
     if (!img || !img.complete || !img.naturalWidth) {
@@ -1107,12 +1105,7 @@ canvas {
       }
       if (!img || !img.complete || !img.naturalWidth) return;
     }
-    const iw = img.naturalWidth;
-    const ih = img.naturalHeight;
-    const scale = Math.max(canvasW / iw, canvasH / ih);
-    const w = iw * scale, h = ih * scale;
-    const x = (canvasW - w) * 0.5, y = (canvasH - h) * 0.5;
-    ctx.drawImage(img, x, y, w, h);
+    if (heroImg.src !== img.src) heroImg.src = img.src;
   }
 
   /* ── Scroll → frame index ── */
@@ -1131,19 +1124,14 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload: frames 0-9 first → keyframes → fill rest ── */
-  const CONCURRENCY = 12;
-  const REVEAL_AFTER = 10; // first 10 frames loaded = smooth early scroll
+  /* ── Preload: sequential 0→210 — dense contiguous coverage as loading progresses ── */
+  const CONCURRENCY  = 16;
+  const REVEAL_AFTER = 10;
 
   function preload() {
     return new Promise(resolve => {
       let revealed = false;
-
-      // Priority: frames 0-9, then every 10th keyframe, then fill gaps
-      const order = [];
-      for (let i = 0; i < 10; i++) order.push(i);
-      for (let i = 10; i < TOTAL; i += 10) order.push(i);
-      for (let i = 10; i < TOTAL; i++) { if (i % 10 !== 0) order.push(i); }
+      const order = Array.from({ length: TOTAL }, (_, i) => i);
 
       let cursor = 0;
       function next() {
@@ -1167,15 +1155,10 @@ canvas {
 
   /* ── Boot ── */
   async function init() {
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
-
     await preload();
-
     paint(0);
     requestAnimationFrame(loop);
-
     loader.classList.add('fade-out');
     setTimeout(() => loader.remove(), 750);
   }
