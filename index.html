@@ -1089,10 +1089,14 @@ canvas {
   let targetIdx  = 0;
   let canvasW    = 0;
   let canvasH    = 0;
+  let lastFrame  = -1;
 
   function resize() {
-    canvasW = canvas.width  = window.innerWidth;
-    canvasH = canvas.height = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvasW = canvas.width  = Math.round(window.innerWidth  * dpr);
+    canvasH = canvas.height = Math.round(window.innerHeight * dpr);
+    canvas.style.width  = window.innerWidth  + 'px';
+    canvas.style.height = window.innerHeight + 'px';
     ctx.imageSmoothingEnabled = false;
     paint(Math.round(currentIdx));
   }
@@ -1120,7 +1124,8 @@ canvas {
   /* ── RAF loop with lerp — currentIdx glides toward targetIdx each tick ── */
   function loop() {
     currentIdx += (targetIdx - currentIdx) * 0.12;
-    paint(Math.round(currentIdx));
+    const frame = Math.round(currentIdx);
+    if (frame !== lastFrame) { lastFrame = frame; paint(frame); }
     requestAnimationFrame(loop);
   }
 
