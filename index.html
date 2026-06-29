@@ -1121,6 +1121,8 @@ canvas {
   'use strict';
 
   const TOTAL  = 211;
+  const STEP   = 2;                        // load every other frame → 106 downloads
+  const FRAMES = Math.ceil(TOTAL / STEP);  // logical frame count (106)
   const PREFIX = './frames/ezgif-frame-';
   const EXT    = '.webp';
 
@@ -1130,7 +1132,7 @@ canvas {
   const loader  = document.getElementById('loader');
   const fill    = document.getElementById('progress-fill');
 
-  const imgs = new Array(TOTAL);
+  const imgs = new Array(FRAMES);
   let loaded     = 0;
   let currentIdx = 0;   // float — lerped toward targetIdx
   let targetIdx  = 0;
@@ -1166,7 +1168,7 @@ canvas {
   function onScroll() {
     const maxScroll = root.offsetHeight - window.innerHeight;
     const t = Math.max(0, Math.min(1, window.scrollY / maxScroll));
-    targetIdx = t * (TOTAL - 1);
+    targetIdx = t * (FRAMES - 1);
   }
 
   /* ── RAF loop with lerp — currentIdx glides toward targetIdx each tick ── */
@@ -1177,17 +1179,17 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload: frames 0-9 first, then keyframes every 5 across full range, then fill ── */
-  const CONCURRENCY  = 16;
+  /* ── Preload: frames 0-9 first, keyframes every 5, then fill ── */
+  const CONCURRENCY  = 20;
   const REVEAL_AFTER = 10;
 
   function preload() {
     return new Promise(resolve => {
       let revealed = false;
       const order = [];
-      for (let i = 0; i < 10; i++) order.push(i);                              // frames 0-9
-      for (let i = 10; i < TOTAL; i += 5) order.push(i);                       // keyframe every 5
-      for (let i = 10; i < TOTAL; i++) { if (i % 5 !== 0) order.push(i); }    // fill gaps
+      for (let i = 0; i < 10; i++) order.push(i);
+      for (let i = 10; i < FRAMES; i += 5) order.push(i);
+      for (let i = 10; i < FRAMES; i++) { if (i % 5 !== 0) order.push(i); }
 
       let cursor = 0;
       function next() {
@@ -1195,11 +1197,11 @@ canvas {
         const i = order[cursor++];
         const img = new Image();
         img.decoding = 'async';
-        img.src = PREFIX + String(i + 1).padStart(3, '0') + EXT;
+        img.src = PREFIX + String(i * STEP + 1).padStart(3, '0') + EXT;
         imgs[i] = img;
         img.onload = img.onerror = () => {
           loaded++;
-          fill.style.width = (loaded / TOTAL * 100) + '%';
+          fill.style.width = (loaded / FRAMES * 100) + '%';
           if (!revealed && loaded >= REVEAL_AFTER) { revealed = true; resolve(); }
           next();
         };
