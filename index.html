@@ -567,6 +567,53 @@ canvas {
   opacity: 0;
   transform: translateY(12px);
 }
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — tablet (≤ 768px)
+════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Services header */
+  .srv-header { padding: 10vh 6vw 3vh; }
+
+  /* Power stats spacing */
+  .power-stats { margin: 3rem 0 4rem; }
+
+  /* Pricing header */
+  .pricing-header { padding: 0 6vw; }
+
+  /* Testimonials: still 2 cols on tablet but narrower */
+  .test-col { width: 44vw; }
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — phones (≤ 520px)
+════════════════════════════════════════════ */
+@media (max-width: 520px) {
+  /* Hero text — tighter on small phones */
+  .hero-heading { font-size: clamp(34px, 9.5vw, 52px); line-height: 1.08; }
+  .hero-sub { font-size: 10px; }
+  #hero-overlay { padding: 0 6vw 7vh; }
+
+  /* Discovery headline — less extreme at 390px */
+  .discover-headline { font-size: clamp(52px, 14vw, 72px); }
+
+  /* Services cards */
+  .srv-box { padding: 2.2rem 1.5rem; }
+
+  /* Power */
+  .power-stats { margin: 2.5rem 0 3.5rem; }
+
+  /* Testimonials: 2 columns overflow at 390px — collapse to 1 */
+  .test-col:nth-child(2) { display: none; }
+  .test-col { width: min(88vw, 360px); }
+
+  /* Pricing grid on small phones */
+  .pricing-grid { max-width: 100%; }
+  .pricing-card { padding: 2rem 1.4rem; }
+
+  /* Legacy CTA */
+  .legacy-btn { padding: 1rem 2rem; font-size: 10px; }
+}
 </style>
 </head>
 <body>
@@ -1097,7 +1144,8 @@ canvas {
     canvasH = canvas.height = Math.round(window.innerHeight * dpr);
     canvas.style.width  = window.innerWidth  + 'px';
     canvas.style.height = window.innerHeight + 'px';
-    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'low';
     paint(Math.round(currentIdx));
   }
 
