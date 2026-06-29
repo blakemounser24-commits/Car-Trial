@@ -1090,11 +1090,11 @@ canvas {
   let canvasW      = 0;
   let canvasH      = 0;
 
-  /* ── Canvas resize ── */
+  /* ── Canvas resize — DPR capped at 1 for motion content (4× cheaper draw) ── */
   function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvasW = canvas.width  = Math.round(window.innerWidth  * dpr);
-    canvasH = canvas.height = Math.round(window.innerHeight * dpr);
+    canvasW = canvas.width  = window.innerWidth;
+    canvasH = canvas.height = window.innerHeight;
+    ctx.imageSmoothingEnabled = false;
     paint(currentIdx);
   }
 
@@ -1131,17 +1131,19 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload: frame 0 first → keyframes every 10 → fill rest ── */
-  const CONCURRENCY = 10;
+  /* ── Preload: frames 0-9 first → keyframes → fill rest ── */
+  const CONCURRENCY = 12;
+  const REVEAL_AFTER = 10; // first 10 frames loaded = smooth early scroll
 
   function preload() {
     return new Promise(resolve => {
       let revealed = false;
 
-      // Priority order: frame 0, then every 10th, then everything else
-      const order = [0];
+      // Priority: frames 0-9, then every 10th keyframe, then fill gaps
+      const order = [];
+      for (let i = 0; i < 10; i++) order.push(i);
       for (let i = 10; i < TOTAL; i += 10) order.push(i);
-      for (let i = 0; i < TOTAL; i++) { if (i % 10 !== 0) order.push(i); }
+      for (let i = 10; i < TOTAL; i++) { if (i % 10 !== 0) order.push(i); }
 
       let cursor = 0;
       function next() {
@@ -1154,7 +1156,7 @@ canvas {
         img.onload = img.onerror = () => {
           loaded++;
           fill.style.width = (loaded / TOTAL * 100) + '%';
-          if (!revealed && i === 0) { revealed = true; resolve(); }
+          if (!revealed && loaded >= REVEAL_AFTER) { revealed = true; resolve(); }
           next();
         };
       }
