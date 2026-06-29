@@ -1171,20 +1171,23 @@ canvas {
 
   /* ── RAF loop with lerp — currentIdx glides toward targetIdx each tick ── */
   function loop() {
-    currentIdx += (targetIdx - currentIdx) * 0.12;
+    currentIdx += (targetIdx - currentIdx) * 0.15;
     const frame = Math.round(currentIdx);
     if (frame !== lastFrame) { lastFrame = frame; paint(frame); }
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload: sequential 0→210 — dense contiguous coverage as loading progresses ── */
+  /* ── Preload: frames 0-9 first, then keyframes every 5 across full range, then fill ── */
   const CONCURRENCY  = 16;
   const REVEAL_AFTER = 10;
 
   function preload() {
     return new Promise(resolve => {
       let revealed = false;
-      const order = Array.from({ length: TOTAL }, (_, i) => i);
+      const order = [];
+      for (let i = 0; i < 10; i++) order.push(i);                              // frames 0-9
+      for (let i = 10; i < TOTAL; i += 5) order.push(i);                       // keyframe every 5
+      for (let i = 10; i < TOTAL; i++) { if (i % 5 !== 0) order.push(i); }    // fill gaps
 
       let cursor = 0;
       function next() {
