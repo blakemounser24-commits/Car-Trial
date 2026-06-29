@@ -1098,10 +1098,15 @@ canvas {
     paint(currentIdx);
   }
 
-  /* ── Cover-fill draw ── */
+  /* ── Cover-fill draw (nearest loaded frame fallback) ── */
   function paint(idx) {
-    const img = imgs[idx];
-    if (!img || !img.complete || !img.naturalWidth) return;
+    let img = imgs[idx];
+    if (!img || !img.complete || !img.naturalWidth) {
+      for (let i = idx - 1; i >= 0; i--) {
+        if (imgs[i] && imgs[i].complete && imgs[i].naturalWidth) { img = imgs[i]; break; }
+      }
+      if (!img || !img.complete || !img.naturalWidth) return;
+    }
     const iw = img.naturalWidth;
     const ih = img.naturalHeight;
     const scale = Math.max(canvasW / iw, canvasH / ih);
@@ -1126,20 +1131,35 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload all frames ── */
+  /* ── Preload: frame 0 first → keyframes every 10 → fill rest ── */
+  const CONCURRENCY = 10;
+
   function preload() {
     return new Promise(resolve => {
-      for (let i = 0; i < TOTAL; i++) {
+      let revealed = false;
+
+      // Priority order: frame 0, then every 10th, then everything else
+      const order = [0];
+      for (let i = 10; i < TOTAL; i += 10) order.push(i);
+      for (let i = 0; i < TOTAL; i++) { if (i % 10 !== 0) order.push(i); }
+
+      let cursor = 0;
+      function next() {
+        if (cursor >= order.length) return;
+        const i = order[cursor++];
         const img = new Image();
-        const n = String(i + 1).padStart(3, '0');
+        img.decoding = 'async';
+        img.src = PREFIX + String(i + 1).padStart(3, '0') + EXT;
+        imgs[i] = img;
         img.onload = img.onerror = () => {
           loaded++;
           fill.style.width = (loaded / TOTAL * 100) + '%';
-          if (loaded === TOTAL) resolve();
+          if (!revealed && i === 0) { revealed = true; resolve(); }
+          next();
         };
-        img.src = PREFIX + n + EXT;
-        imgs[i] = img;
       }
+
+      for (let c = 0; c < CONCURRENCY; c++) next();
     });
   }
 
