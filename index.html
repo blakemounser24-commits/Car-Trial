@@ -82,15 +82,6 @@ canvas {
   display: block;
 }
 
-#c {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-}
 
 /* ═══════════════════════════════════════════
    CINEMATIC SECTIONS
@@ -643,7 +634,7 @@ canvas {
 
 <div id="scroll-root">
   <div id="sticky-hero">
-    <img id="c" alt="" draggable="false">
+    <canvas id="c"></canvas>
     <div id="hero-vignette"></div>
     <div id="hero-overlay">
       <h1 class="hero-heading">Power without<br><em>compromise.</em></h1>
@@ -1086,17 +1077,26 @@ canvas {
   const PREFIX = './frames/ezgif-frame-';
   const EXT    = '.webp';
 
-  const heroImg = document.getElementById('c');
+  const canvas  = document.getElementById('c');
+  const ctx     = canvas.getContext('2d', { alpha: false });
   const root    = document.getElementById('scroll-root');
   const loader  = document.getElementById('loader');
   const fill    = document.getElementById('progress-fill');
 
   const imgs = new Array(TOTAL);
   let loaded     = 0;
-  let currentIdx = 0;
+  let currentIdx = 0;   // float — lerped toward targetIdx
   let targetIdx  = 0;
+  let canvasW    = 0;
+  let canvasH    = 0;
 
-  /* ── Paint: swap img src — GPU compositor handles cover scaling ── */
+  function resize() {
+    canvasW = canvas.width  = window.innerWidth;
+    canvasH = canvas.height = window.innerHeight;
+    ctx.imageSmoothingEnabled = false;
+    paint(Math.round(currentIdx));
+  }
+
   function paint(idx) {
     let img = imgs[idx];
     if (!img || !img.complete || !img.naturalWidth) {
@@ -1105,22 +1105,22 @@ canvas {
       }
       if (!img || !img.complete || !img.naturalWidth) return;
     }
-    if (heroImg.src !== img.src) heroImg.src = img.src;
+    const scale = Math.max(canvasW / img.naturalWidth, canvasH / img.naturalHeight);
+    const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
+    ctx.drawImage(img, (canvasW - w) * 0.5, (canvasH - h) * 0.5, w, h);
   }
 
-  /* ── Scroll → frame index ── */
+  /* ── Scroll → target frame ── */
   function onScroll() {
     const maxScroll = root.offsetHeight - window.innerHeight;
     const t = Math.max(0, Math.min(1, window.scrollY / maxScroll));
-    targetIdx = Math.round(t * (TOTAL - 1));
+    targetIdx = t * (TOTAL - 1);
   }
 
-  /* ── RAF render loop ── */
+  /* ── RAF loop with lerp — currentIdx glides toward targetIdx each tick ── */
   function loop() {
-    if (targetIdx !== currentIdx) {
-      currentIdx = targetIdx;
-      paint(currentIdx);
-    }
+    currentIdx += (targetIdx - currentIdx) * 0.12;
+    paint(Math.round(currentIdx));
     requestAnimationFrame(loop);
   }
 
@@ -1155,6 +1155,8 @@ canvas {
 
   /* ── Boot ── */
   async function init() {
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
     await preload();
     paint(0);
