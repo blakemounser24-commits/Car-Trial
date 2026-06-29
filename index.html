@@ -1169,31 +1169,22 @@ canvas {
     targetIdx = t * (TOTAL - 1);
   }
 
-  /* ── RAF loop with lerp — currentIdx glides toward targetIdx each tick ── */
+  /* ── RAF loop with lerp ── */
   function loop() {
-    currentIdx += (targetIdx - currentIdx) * 0.15;
+    currentIdx += (targetIdx - currentIdx) * 0.12;
     const frame = Math.round(currentIdx);
     if (frame !== lastFrame) { lastFrame = frame; paint(frame); }
     requestAnimationFrame(loop);
   }
 
-  /* ── GPU pre-warm: draw each frame to a tiny canvas on load so the GPU texture
-        is uploaded before the RAF loop ever needs it — eliminates first-draw stutter ── */
-  const warmCanvas = document.createElement('canvas');
-  warmCanvas.width = warmCanvas.height = 2;
-  const warmCtx = warmCanvas.getContext('2d');
-
-  /* ── Preload: frames 0-9 first, keyframes every 3, then fill ── */
-  const CONCURRENCY  = 20;
+  /* ── Preload: sequential 0→210, reveal after first 10 ── */
+  const CONCURRENCY  = 16;
   const REVEAL_AFTER = 10;
 
   function preload() {
     return new Promise(resolve => {
       let revealed = false;
-      const order = [];
-      for (let i = 0; i < 10; i++) order.push(i);
-      for (let i = 10; i < TOTAL; i += 3) order.push(i);
-      for (let i = 10; i < TOTAL; i++) { if ((i - 10) % 3 !== 0) order.push(i); }
+      const order = Array.from({ length: TOTAL }, (_, i) => i);
 
       let cursor = 0;
       function next() {
@@ -1204,7 +1195,6 @@ canvas {
         img.src = PREFIX + String(i + 1).padStart(3, '0') + EXT;
         imgs[i] = img;
         img.onload = img.onerror = () => {
-          if (img.naturalWidth) warmCtx.drawImage(img, 0, 0, 2, 2);
           loaded++;
           fill.style.width = (loaded / TOTAL * 100) + '%';
           if (!revealed && loaded >= REVEAL_AFTER) { revealed = true; resolve(); }
