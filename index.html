@@ -1177,14 +1177,20 @@ canvas {
     requestAnimationFrame(loop);
   }
 
-  /* ── Preload: sequential 0→210, reveal after first 10 ── */
+  /* ── Preload: frames 0-9 first, then keyframe every 5 across full range, then fill.
+        Reveal after all keyframes load so the full scroll is smooth from the start. ── */
   const CONCURRENCY  = 16;
-  const REVEAL_AFTER = 10;
+  const KF_STEP      = 5;
+  const KF_COUNT     = 10 + Math.ceil((TOTAL - 10) / KF_STEP); // 10 + 41 = 51
+  const REVEAL_AFTER = KF_COUNT;                                // wait for full coverage
 
   function preload() {
     return new Promise(resolve => {
       let revealed = false;
-      const order = Array.from({ length: TOTAL }, (_, i) => i);
+      const order = [];
+      for (let i = 0; i < 10; i++) order.push(i);
+      for (let i = 10; i < TOTAL; i += KF_STEP) order.push(i);
+      for (let i = 10; i < TOTAL; i++) { if ((i - 10) % KF_STEP !== 0) order.push(i); }
 
       let cursor = 0;
       function next() {
